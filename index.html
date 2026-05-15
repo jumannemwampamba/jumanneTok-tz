@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JumanneTok TZ</title>
+    
+    <!-- Link  ya FontAwesome kwa ajili ya ikoni zote za mfumo -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 1. SEHEMU YA JUU (TOP NAV - SEARCH BAR) -->
+    <header class="top-nav">
+        <div class="top-buttons">
+            <span class="top-tab">Friends</span>
+            <span class="top-tab active">For You</span>
+        </div>
+        
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Tafuta tags au video">
+            <button id="btn-search-trigger">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- 2. SEHEMU KUU YA MAUDHUI (MAIN CONTENT AREA) -->
+    <main class="main-container">
+        
+        <!-- UKURASA WA HOME (VIDEO FEED) -->
+        <section id="home-page" class="page active-page">
+            <div class="video-placeholder">
+                <i class="fas fa-play-circle"></i>
+                <p>Sehemu ya Video (Home Feed)</p>
+            </div>
+        </section>
+
+        <!-- UKURASA WA FRIENDS -->
+        <section id="friends-page" class="page">
+            <div class="page-content">
+                <h2>Marafiki Zangu</h2>
+                <p>Hapa utaona video na taarifa kutoka kwa marafiki zako ulio mfuata.</p>
+                <div id="friends-videos-container"></div>
+            </div>
+        </section>
+
+        <!-- UKURASA WA CHAT / INBOX (MTAZAMO WA WHATSAPP & TICKS) -->
+        <section id="inbox-page" class="page">
+            <div id="inbox-users-view">
+                <h2>Sanduku la Ujumbe (Inbox)</h2>
+                <div id="chat-list"></div>
+            </div>
+
+            <!-- KISANDUKU CHA CHAT BINAFSI (SOGA YA SIRI) -->
+            <div id="private-chat-box" class="hidden">
+                <div class="chat-header">
+                    <button id="btn-close-chat">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <span id="chat-target-name">@Username</span>
+                </div>
+                
+                <div id="chat-messages-area">
+                    <!-- Mifano ya Ticks za WhatsApp kwenye kila ujumbe -->
+                    <div class="message sent">
+                        <p>Mambo vipi mkuu?</p>
+                        <span class="msg-time">10:00 AM <i class="fas fa-check tick"></i></span> <!-- Tick Moja -->
+                    </div>
+                    
+                    <div class="message sent">
+                        <p>Mzigo umefika cloud?</p>
+                        <span class="msg-time">10:02 AM <i class="fas fa-check-double tick delivered"></i></span> <!-- Ticks Mbili -->
+                    </div>
+                </div>
+
+                <div class="chat-footer">
+                    <input type="text" id="chat-input-field" placeholder="Andika ujumbe...">
+                    <button id="btn-send-message">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- UKURASA NA PROFILE (FOMU YA KUJISAJILI / KUINGIA) -->
+        <section id="profile-page" class="page">
+            <div class="auth-container">
+                <h2>Karibu Kwenye Mfumo wetu wa JumanneTok tz</h2>
+                <p>Ingia au Jisajili ili kuendelea</p>
+                
+                <!-- NIMELEKEBA: Nimeongeza IDs na kusahihisha kufungwa kwa fomu -->
+                <form class="auth-form">
+                    <input type="text" id="auth-username" placeholder="Jina la Mtumiaji" required>
+                    <input type="password" id="auth-password" placeholder="Nywila (Password)" required>
+                    <button type="submit" class="btn-submit">Jisajili / Ingia</button>
+                </form>
+
+                <button class="btn-back-home">Rudi Home</button>
+            </div>
+        </section>
+
+        <!-- UKURASA WA DASHBOARD YA MTUMIAJI -->
+        <section id="dashboard-page" class="page">
+            <!-- Maudhui yake yakijaa na JS mtumiaji akishalogin -->
+        </section>
+
+    </main>
+
+    <!-- 3. SEHEMU YA CHINI (BOTTOM NAVIGATION BAR) -->
+    <nav class="bottom-nav">
+        <button class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </button>
+
+        <button class="nav-item">
+            <i class="fas fa-users"></i>
+            <span>Friends</span>
+        </button>
+
+        <!-- KITUFE CHA UPLOAD CHENYE RANGI ZA BENDERA YA TZ -->
+        <button class="nav-item tz-upload-btn">
+            <div class="tz-layer green-layer"></div>
+            <div class="tz-layer blue-layer"></div>
+            <div class="upload-icon-center">
+                <i class="fas fa-plus"></i>
+            </div>
+        </button>
+
+        <button class="nav-item">
+            <i class="fas fa-comment-dots"></i>
+            <span>Inbox</span>
+        </button>
+
+        <button class="nav-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </button>
+    </nav>
+
+    <!-- 4. SCREEN YA LIVE VIDEO CALL (INAYOFICHA TIKTOK) -->
+    <div id="video-call-screen" class="hidden">
+        <!-- Video ya Mtu Unayeongea Naye (Skrini Kubwa) -->
+        <video id="remoteVideo" autoplay playsinline class="remote-video"></video>
+        
+        <!-- Video ya Kamera Yako (Skrini Ndogo ya Juu) -->
+        <video id="localVideo" autoplay playsinline muted class="local-video"></video>
+
+        <div class="call-controls">
+            <button id="btn-end-call" class="btn-hangup">
+                <i class="fas fa-phone-slash"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Kuunganisha faili kuu la JavaScript -->
+    <script src="app.js"></script>
+</body>
+</html>
